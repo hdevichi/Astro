@@ -2,10 +2,12 @@ __author__ = 'hadrien'
 
 from math import pi
 
+# converts the stars.txt files
+
 compact = True
 
 etoiles = open('stars500.txt')
-fout = open('stars500o.txt', 'w')
+fout = open('output/stars500o.txt', 'w')
 fout.write('[')
 for line in etoiles:
     etoile = line.split()
@@ -18,11 +20,11 @@ for line in etoiles:
 
         if compact:
             alpha = int(float(etoile[3*i]) *10)
-            delta = int( (float(etoile[3*i+1])+90) *10)
+            delta = int( (float(etoile[3*i+1])+90) *20)
             mag = float(etoile[3*i+2])
-            star = 0
-            if (mag < 2.01):
-                star = 1
+            star = int(mag)
+            if (mag <0):
+                star= 0
             star = star + delta*10
             star = star + alpha *100000
             line = " {0} ".format(star)

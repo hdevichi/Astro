@@ -6,9 +6,9 @@ from Tkinter import *
 # parametres (attention heure en TU)
 annee =  2015
 mois =  5
-jour = 16
-heures = 15
-minutes = 22
+jour = 23
+heures = 14
+minutes = 37
 secondes = 0
 
 # coordonnees en degres decimaux
@@ -45,7 +45,7 @@ printHMS("TSL=",TSL)
 
 # init screen
 master = Tk()
-taille = 800
+taille = 500
 w = Canvas(master, width=taille, height=taille)
 w.pack()
 w.create_oval(5, 5, taille, taille, fill="black")
@@ -55,6 +55,8 @@ etoiles = open('stars1500.txt')
 count = 0
 for line in etoiles:
     count = count + 1
+    if (count > 500):
+        break
     etoile = line.split()
     # etoile: 0 = id, 1 = alpha, 2 = delta, 4 = magnitude, 5 = color (type)
     alpha = radians(float(etoile[1]))
@@ -75,12 +77,17 @@ for line in etoiles:
 
     if hauteur < 0:
         continue
+
     # dessiner l'etoile = 0,0: haut gauche ; taille
     rayon = float(taille)/2
     r = rayon * ( 90 - degrees(hauteur) ) / 90
-    x = rayon + r * sin (azimut)
-    y = rayon + r * cos (azimut)
-    if (magnitude < 2.51):
+    x = int(rayon + r * sinazimut + .5)
+    y = int(rayon + r * cosazimut + .5)
+
+    if (count < 20):
+        print ("s.az:{0} c.az:{1} h:{2}m r:{3} x:{4} y:{5} rcosaz:{6} {7}".format(sinazimut,cosazimut, hauteur,r,x,y, r*cosazimut, r*cos(azimut)))
+
+    if (magnitude < 2.01):
         w.create_rectangle(x,y,x+4,y+4, fill="white",  )
     else:
         w.create_rectangle(x,y,x+2,y+2, fill="white",  )
