@@ -2,6 +2,7 @@ __author__ = 'hadrien'
 
 from math import degrees, radians, cos, sin, asin,pi
 from Tkinter import *
+# pb: reconnaitre les sauts de ligne windows..
 
 # parametres (attention heure en TU)
 annee =  2015
@@ -45,18 +46,16 @@ printHMS("TSL=",TSL)
 
 # init screen
 master = Tk()
-taille = 500
+taille = 700
 w = Canvas(master, width=taille, height=taille)
 w.pack()
 w.create_oval(5, 5, taille, taille, fill="black")
 
 #for each star
-etoiles = open('stars1500.txt')
+etoiles = open('stars.txt', 'U')
 count = 0
 for line in etoiles:
     count = count + 1
-    if (count > 500):
-        break
     etoile = line.split()
     # etoile: 0 = id, 1 = alpha, 2 = delta, 4 = magnitude, 5 = color (type)
     alpha = radians(float(etoile[1]))
@@ -84,20 +83,16 @@ for line in etoiles:
     x = int(rayon + r * sinazimut + .5)
     y = int(rayon + r * cosazimut + .5)
 
-    if (count < 20):
-        print ("s.az:{0} c.az:{1} h:{2}m r:{3} x:{4} y:{5} rcosaz:{6} {7}".format(sinazimut,cosazimut, hauteur,r,x,y, r*cosazimut, r*cos(azimut)))
-
-    if (magnitude < 2.01):
+    if (magnitude < 1.51):
         w.create_rectangle(x,y,x+4,y+4, fill="white",  )
-    else:
+    elif (magnitude < 3.01):
         w.create_rectangle(x,y,x+2,y+2, fill="white",  )
+    else:
+        w.create_line(x, y, x+1, y+1, fill='white')
 
-    # recognize polaire
-    if etoile[0].startswith("11767"):
-        w.create_rectangle(x,y,x+4,y+4, fill="red",  )
-
-    # limit to magnitude 4.15
-    if (count > 600):
+    # limit to magnitude 6 (approx)
+    if (count > 3000):
          break
+
 mainloop()
 
